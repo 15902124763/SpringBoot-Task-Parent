@@ -11,7 +11,6 @@
 
     <artifactId>task-start</artifactId>
     <version>1.0.0</version>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -60,5 +59,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

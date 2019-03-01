@@ -12,7 +12,7 @@
         <module>task-service</module>
         <module>task-pojo</module>
         <module>task-dao</module>
-        <module>task-start</module>
+        <module>task-api</module>
     </modules>
 
     <parent>
@@ -47,6 +47,11 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <!-- MySQL 连接驱动依赖 -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
         </dependency>
     </dependencies>
 

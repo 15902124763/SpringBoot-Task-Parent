@@ -1,4 +1,4 @@
-package com.yarm;
+package com.yarm.task;
 
 
 import org.springframework.boot.SpringApplication;

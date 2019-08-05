@@ -12,5 +12,11 @@
     <artifactId>task-dao</artifactId>
     <version>1.0.0</version>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>com.yarm</groupId>
+            <artifactId>task-pojo</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+    </dependencies>
 </project>

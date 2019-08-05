@@ -1,11 +1,13 @@
 /~
 .DS_Store
-
+.classpath
+.project
+.settings
+*bin/
 .sass-cache
 target
 node_modules
+undefined
 bower_components
-/.idea
+.idea/
 *.iml
-sftp-config.json
-

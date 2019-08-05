@@ -6,11 +6,11 @@
         <artifactId>task-parent</artifactId>
         <groupId>com.yarm</groupId>
         <version>1.0.0</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <groupId>com.yarm</groupId>
     <artifactId>task-api</artifactId>
     <version>1.0.0</version>
-
-
 </project>

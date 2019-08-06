@@ -24,5 +24,10 @@
             <artifactId>task-dao</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.yarm</groupId>
+            <artifactId>task-service</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 </project>

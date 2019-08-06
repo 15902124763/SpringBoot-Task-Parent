@@ -1,10 +1,12 @@
 package com.yarm.task.task.common.utils;
 
 import com.alibaba.fastjson.JSON;
-import com.yarm.task.task.pojo.QuartzBean;
+import com.yarm.task.pojo.dao.TaskDO;
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.UUID;
 
 /**
  * Created with IDEA
@@ -18,17 +20,34 @@ public class QuartzUtils {
     /**
      * 创建定时任务 定时任务创建之后默认启动状态
      * @param scheduler   调度器
-     * @param quartzBean  定时任务信息类
+     * @param taskDO  定时任务信息类
      * @throws Exception
      */
-    public static boolean createScheduleJob(Scheduler scheduler, QuartzBean quartzBean){
+    public static boolean createScheduleJob(Scheduler scheduler, TaskDO taskDO){
         try {
-            //定时任务类需要是job类的具体实现 QuartzJobBean是job的抽象类。
-            // 设置定时任务执行方式
-            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(quartzBean.getCronExpression());
+            // 触发时间点
+            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(taskDO.getCronExpression().trim());
+
+            // 构建job信息
+            Class cls = Class.forName(taskDO.getJobClassName());
+            cls.newInstance();
+            JobDetail jobDetail = JobBuilder.newJob(cls)
+                    .withIdentity(taskDO.getJobId())
+                    .withDescription(taskDO.getJobDescription())
+                    .build();
+
             // 构建触发器trigger
-            CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(quartzBean.getJobId()).withSchedule(scheduleBuilder).build();
-            scheduler.scheduleJob(trigger);
+            CronTrigger trigger = null;
+
+            // 直接启动
+            trigger = TriggerBuilder.newTrigger()
+                    .withIdentity(taskDO.getJobId())
+                    .withSchedule(scheduleBuilder)
+                    .startNow()
+                    .build();
+
+            // 交由Scheduler安排触发
+            scheduler.scheduleJob(jobDetail,trigger);
             return true;
         } catch (Exception e) {
             log.warn("创建定时任务失败:" + JSON.toJSON(e.getMessage()).toString());
@@ -91,19 +110,26 @@ public class QuartzUtils {
     /**
      * 更新定时任务
      * @param scheduler   调度器
-     * @param quartzBean  定时任务信息类
+     * @param taskDO  定时任务信息类
      * @throws SchedulerException
      */
-    public static boolean updateScheduleJob(Scheduler scheduler, QuartzBean quartzBean)  {
+    public static boolean updateScheduleJob(Scheduler scheduler, TaskDO taskDO)  {
         try {
-            //获取到对应任务的触发器
-            TriggerKey triggerKey = TriggerKey.triggerKey(quartzBean.getJobId());
-            //设置定时任务执行方式
-            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(quartzBean.getCronExpression());
-            //重新构建任务的触发器trigger
+            // 获取到对应任务的触发器
+            TriggerKey triggerKey = TriggerKey.triggerKey(taskDO.getJobId());
+
+            // 设置定时任务执行方式
+            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(taskDO.getCronExpression());
+
+            // 重新构建任务的触发器trigger
             CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
-            trigger = trigger.getTriggerBuilder().withIdentity(triggerKey).withSchedule(scheduleBuilder).build();
-            //重置对应的job
+
+            trigger = trigger.getTriggerBuilder()
+                    .withIdentity(triggerKey)
+                    .withSchedule(scheduleBuilder)
+                    .build();
+
+            // 重置对应的job
             scheduler.rescheduleJob(triggerKey, trigger);
             return true;
         } catch (SchedulerException e) {
@@ -119,13 +145,30 @@ public class QuartzUtils {
      * @throws SchedulerException
      */
     public static boolean deleteScheduleJob(Scheduler scheduler, String jobId) {
-        JobKey jobKey = JobKey.jobKey(jobId);
         try {
+            TriggerKey triggerKey = TriggerKey.triggerKey(jobId);
+            JobKey jobKey = JobKey.jobKey(jobId);
+            // 停止触发器
+            scheduler.pauseTrigger(triggerKey);
+            // 移除触发器
+            scheduler.unscheduleJob(triggerKey);
+            // 删除任务
             scheduler.deleteJob(jobKey);
             return true;
         } catch (SchedulerException e) {
             log.warn("删除定时任务出错:" + JSON.toJSON(e.getMessage()).toString());
         }
         return false;
+    }
+
+    /**
+     * 获取UUID生成的jobId
+     * @return
+     */
+    public static String getJobId(){
+        UUID uuid=UUID.randomUUID();
+        String str = uuid.toString();
+        String uuidStr = str.replace("-", "");
+        return uuidStr;
     }
 }

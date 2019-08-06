@@ -1,4 +1,4 @@
-package com.yarm.task.task.pojo.dao;
+package com.yarm.task.pojo.dao;
 
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -27,11 +27,17 @@ public class TaskDO {
     @Column(length = 500)
     private String jobName;
 
+    // 任务描述
+    @Column(length = 500)
+    private String jobDescription;
+
+    @Column(length = 500)
+    private String jobClassName;//执行类
     // 任务id
     @Column(length = 500, nullable = false)
     private String jobId;
 
-    // 任务状态 启动还是暂停,0：非启动，1：启动
+    // 任务状态 启动还是暂停,0：启动，1：非启动
     @Column(length = 4)
     private int status;
 
@@ -125,5 +131,21 @@ public class TaskDO {
 
     public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
+    }
+
+    public String getJobClassName() {
+        return jobClassName;
+    }
+
+    public void setJobClassName(String jobClassName) {
+        this.jobClassName = jobClassName;
+    }
+
+    public String getJobDescription() {
+        return jobDescription;
+    }
+
+    public void setJobDescription(String jobDescription) {
+        this.jobDescription = jobDescription;
     }
 }

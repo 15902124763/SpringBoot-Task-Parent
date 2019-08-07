@@ -1,4 +1,4 @@
-package com.yarm.task.task.common.utils;
+package com.yarm.task.common.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.yarm.task.pojo.dao.TaskDO;
@@ -32,15 +32,13 @@ public class QuartzUtils {
             Class cls = Class.forName(taskDO.getJobClassName());
             cls.newInstance();
             JobDetail jobDetail = JobBuilder.newJob(cls)
-                    .withIdentity(taskDO.getJobId())
+                    .withIdentity(taskDO.getJobId(), taskDO.getJobGroup())
                     .withDescription(taskDO.getJobDescription())
                     .build();
 
             // 构建触发器trigger
-            CronTrigger trigger = null;
-
             // 直接启动
-            trigger = TriggerBuilder.newTrigger()
+            CronTrigger trigger = TriggerBuilder.newTrigger()
                     .withIdentity(taskDO.getJobId())
                     .withSchedule(scheduleBuilder)
                     .startNow()

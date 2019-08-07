@@ -8,6 +8,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created with IDEA
@@ -23,8 +24,12 @@ public class TaskServiceImpl extends TaskServiceAbstract {
     private TaskDao taskDao;
 
     @Override
-    public void insert(TaskDO taskDO) {
-        taskDao.save(taskDO);
+    public boolean insert(TaskDO taskDO) {
+        // 非启动
+        taskDO.setStatus(1);
+        TaskDO save = taskDao.save(taskDO);
+        if(Objects.isNull(save)) return false;
+        return true;
     }
 
 

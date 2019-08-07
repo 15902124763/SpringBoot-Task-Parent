@@ -1,13 +1,9 @@
 package com.yarm.task.pojo.dao;
 
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.util.Date;
+import javax.validation.constraints.NotNull;
 
 /**
  * Created with IDEA
@@ -19,12 +15,13 @@ import java.util.Date;
 @Entity
 @Table(name = "t_task")
 @EntityListeners(AuditingEntityListener.class)
-public class TaskDO {
+public class TaskDO extends BaseDO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)//支持mysql主键自增长
     private int id;
     // 任务名称
     @Column(length = 500)
+    @NotNull(message = "任务名称不能为空")
     private String jobName;
 
     // 任务描述
@@ -32,10 +29,16 @@ public class TaskDO {
     private String jobDescription;
 
     @Column(length = 500)
+    @NotNull(message = "任务执行类不能为空")
     private String jobClassName;//执行类
     // 任务id
     @Column(length = 500, nullable = false)
     private String jobId;
+
+    // 任务分组
+    @Column(length = 500, nullable = false)
+    @NotNull(message = "任务分组不能为空")
+    private String jobGroup;
 
     // 任务状态 启动还是暂停,0：启动，1：非启动
     @Column(length = 4)
@@ -43,23 +46,10 @@ public class TaskDO {
 
     // 任务运行时间表达式
     @Column(length = 32, nullable = false)
+    @NotNull(message = "任务cron表达式不能为空")
     private String cronExpression;
 
-    @Column
-    @CreatedDate
-    private Date createdAt;
 
-    @Column(length = 64)
-    @CreatedBy
-    private String createdBy = "system";
-
-    @Column
-    @LastModifiedDate
-    private Date updatedAt;
-
-    @Column(length = 64)
-    @LastModifiedBy
-    private String updatedBy;
 
     public int getId() {
         return id;
@@ -101,38 +91,6 @@ public class TaskDO {
         this.cronExpression = cronExpression;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public String getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
-    }
-
     public String getJobClassName() {
         return jobClassName;
     }
@@ -147,5 +105,13 @@ public class TaskDO {
 
     public void setJobDescription(String jobDescription) {
         this.jobDescription = jobDescription;
+    }
+
+    public String getJobGroup() {
+        return jobGroup;
+    }
+
+    public void setJobGroup(String jobGroup) {
+        this.jobGroup = jobGroup;
     }
 }

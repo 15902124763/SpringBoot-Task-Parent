@@ -19,7 +19,7 @@ public interface TaskService {
      * 数据库记录任务
      * @param taskDO
      */
-    void insert(TaskDO taskDO);
+    boolean insert(TaskDO taskDO);
 
 
     /**

@@ -1,4 +1,4 @@
-package com.yarm.task.controller;
+package com.yarm.task.api.controller;
 
 import com.yarm.task.pojo.ResponseApi;
 import com.yarm.task.pojo.dao.TaskDO;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * author:Yarm.Yang
  * Date:2019/8/6
  * Time:13:09
- * Des:
+ * Des:任务
  */
 @RestController
 @RequestMapping("job")
@@ -26,7 +26,7 @@ public class TaskController {
     @PostMapping("create")
     public ResponseApi<Boolean> createJob(TaskDO taskDo){
         ResponseApi<Boolean> responseApi = new ResponseApi<>();
-
+        taskService.insert(taskDo);
         responseApi.setData(false);
         return responseApi;
     }

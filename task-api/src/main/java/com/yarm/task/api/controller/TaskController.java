@@ -26,16 +26,24 @@ public class TaskController {
     @PostMapping("create")
     public ResponseApi<Boolean> createJob(TaskDO taskDo){
         ResponseApi<Boolean> responseApi = new ResponseApi<>();
-        taskService.insert(taskDo);
-        responseApi.setData(false);
+        boolean insert = taskService.insert(taskDo);
+        responseApi.setData(insert);
         return responseApi;
     }
 
-    @PostMapping("del/{jobId}")
-    public ResponseApi<Boolean> delJob(@PathVariable("jobId") String jobId){
+    @PostMapping("stop/{jobId}")
+    public ResponseApi<Boolean> stopJob(@PathVariable("jobId") String jobId){
         ResponseApi<Boolean> responseApi = new ResponseApi<>();
-        boolean scheduleJob = taskService.delScheduleJob(jobId);
-        responseApi.setData(scheduleJob);
+        boolean isOk = taskService.stopJob(jobId);
+        responseApi.setData(isOk);
+        return responseApi;
+    }
+
+    @PostMapping("run/once/{jobId}")
+    public ResponseApi<Boolean> runOnce(@PathVariable("jobId") String jobId){
+        ResponseApi<Boolean> responseApi = new ResponseApi<>();
+        boolean isOk = taskService.runOnce(jobId);
+        responseApi.setData(isOk);
         return responseApi;
     }
 }

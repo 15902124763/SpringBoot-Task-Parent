@@ -5,6 +5,7 @@ import com.yarm.task.dao.TaskDao;
 import com.yarm.task.dao.TaskGroupDao;
 import com.yarm.task.pojo.dao.TaskGroupDO;
 import com.yarm.task.service.TaskGroupService;
+import com.yarm.task.service.TaskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +26,17 @@ public class JobInit implements ApplicationRunner {
     // 默认任务组时间
     private static final String DEFAULT_TASK_GROUP_TIME = "2019-01-01 00:00:00";
     @Autowired
-    private TaskDao taskDao;
-    @Autowired
     private TaskGroupDao taskGroupDao;
     @Autowired
     private TaskGroupService taskGroupService;
+    @Autowired
+    private TaskService taskService;
     @Override
     public void run(ApplicationArguments args) throws Exception {
         // 初始化默认组
         this.insertDefaultGroup();
+        // 唤醒任务
+        taskService.resumeJobs();
     }
 
     /**

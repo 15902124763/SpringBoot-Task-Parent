@@ -37,7 +37,6 @@ public class TaskDO extends BaseDO {
 
     // 任务分组
     @Column(length = 500, nullable = false)
-    @NotNull(message = "任务分组不能为空")
     private String jobGroup;
 
     // 任务状态 启动还是暂停,0：启动，1：非启动
@@ -113,5 +112,19 @@ public class TaskDO extends BaseDO {
 
     public void setJobGroup(String jobGroup) {
         this.jobGroup = jobGroup;
+    }
+
+    @Override
+    public String toString() {
+        return "TaskDO{" +
+                "id=" + id +
+                ", jobName='" + jobName + '\'' +
+                ", jobDescription='" + jobDescription + '\'' +
+                ", jobClassName='" + jobClassName + '\'' +
+                ", jobId='" + jobId + '\'' +
+                ", jobGroup='" + jobGroup + '\'' +
+                ", status=" + status +
+                ", cronExpression='" + cronExpression + '\'' +
+                '}';
     }
 }

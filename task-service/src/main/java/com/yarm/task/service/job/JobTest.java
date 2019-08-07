@@ -28,16 +28,10 @@ public class JobTest implements Job {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        TaskDO taskDO = new TaskDO();
+        log.info("goood job");
 
-        taskDO.setJobId(QuartzUtils.getJobId());
-        taskDO.setCronExpression("0 0/1 * * * ? *");
-        taskDO.setJobClassName("com.yarm.task.service.job.JobTest");
-        taskDO.setJobDescription("测试任务");
-        taskDO.setJobName("测试");
-
-        boolean isOk = taskService.createScheduleJob(taskDO);
-        if(isOk)
-            log.info("任务开始执行：" + JSON.toJSON(taskDO));
+//        boolean isOk = taskService.createScheduleJob(taskDO);
+//        if(isOk)
+//            log.info("任务开始执行：" + JSON.toJSON(taskDO));
     }
 }

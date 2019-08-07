@@ -16,4 +16,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TaskGroupDao extends JpaRepository<TaskGroupDO, Integer>, QueryByExampleExecutor<TaskGroupDO> {
    boolean existsByJobGroupAndType(@Param("jobGroup") String jobGroup, @Param("type") int type);
+   TaskGroupDO getByTypeAndStatus(@Param("type") int type, @Param("status") int status);
 }

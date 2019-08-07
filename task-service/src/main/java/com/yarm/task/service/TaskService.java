@@ -12,8 +12,25 @@ import java.util.List;
  * Des:
  */
 public interface TaskService {
+
+    /************************ 以下是抽象类实现的方法 ************************/
+
+    /**
+     * 创建以及启动任务
+     * @param taskDO
+     * @return
+     */
     boolean createScheduleJob(TaskDO taskDO);
-    boolean delScheduleJob(String jobId);
+
+    /**
+     * 唤醒Status=1的任务
+     * @return
+     */
+    boolean resumeJobs();
+
+
+
+    /************************ 以下是普通类实现的方法 ************************/
 
     /**
      * 数据库记录任务
@@ -45,8 +62,28 @@ public interface TaskService {
 
     /**
      * 是否存在
-     * @param taskDO
+     * @param jobId
      * @return
      */
-    boolean exist(TaskDO taskDO);
+    boolean existByJobId(String jobId);
+
+    /**
+     * 关闭任务
+     * @param jobId
+     * @return
+     */
+    boolean stopJob(String jobId);
+
+    /**
+     * 使任务执行一次
+     * @param jobId
+     * @return
+     */
+    boolean runOnce(String jobId);
+
+    /**
+     * 更新
+     * @param jobId
+     */
+    void updateByJobId(String jobId);
 }

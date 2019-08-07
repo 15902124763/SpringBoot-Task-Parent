@@ -92,10 +92,11 @@ public class QuartzUtils {
      * 根据任务ID立即运行一次定时任务
      * @param scheduler     调度器
      * @param jobId       定时任务ID
+     * @param jobGroup       定时任务组
      * @throws SchedulerException
      */
-    public static boolean runOnce(Scheduler scheduler, String jobId){
-        JobKey jobKey = JobKey.jobKey(jobId);
+    public static boolean runOnce(Scheduler scheduler, String jobId, String jobGroup){
+        JobKey jobKey = JobKey.jobKey(jobId,jobGroup);
         try {
             scheduler.triggerJob(jobKey);
             return true;

@@ -8,12 +8,13 @@ import com.yarm.task.pojo.dao.TaskGroupDO;
 import com.yarm.task.service.TaskServiceAbstract;
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.Scheduler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Savepoint;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,7 +27,7 @@ import java.util.Objects;
  */
 @Service
 public class TaskServiceImpl extends TaskServiceAbstract {
-
+    private static Logger log = LoggerFactory.getLogger(TaskServiceImpl.class);
     @Autowired
     private TaskDao taskDao;
     @Autowired
@@ -51,6 +52,7 @@ public class TaskServiceImpl extends TaskServiceAbstract {
         taskDO.setCronExpression(taskDO.getCronExpression().trim());
         taskDO.setJobClassName(taskDO.getCronExpression().trim());
 
+        // 未分组区默认组
         if(StringUtils.isBlank(taskDO.getJobGroup())){
             // 取默认组
             TaskGroupDO dfGroup = taskGroupDao.getByTypeAndStatus(1, 1);

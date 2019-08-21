@@ -123,6 +123,11 @@
             <artifactId>jackson-core-asl</artifactId>
             <version>${jackson.core.asl.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
     <profiles>
         <!--开发环境 -->
